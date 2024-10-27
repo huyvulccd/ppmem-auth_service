@@ -1,0 +1,29 @@
+spring:
+  application:
+    name: AuthService
+  datasource:
+    username: huyvu
+    url: jdbc:postgresql://localhost:5432/meap_db_auth
+    password: "123456"
+  jpa:
+    hibernate:
+      format_sql: true
+      dialect: org.hibernate.dialect.PostgreSQL81Dialect
+      ddl-auto: update
+    show-sql: 'true'
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: your-client-id
+            client-secret: your-client-secret
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            scope:
+              - email
+              - profile
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth
+            token-uri: https://oauth2.googleapis.com/token
+            user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
