@@ -24,7 +24,7 @@ public class UserApp implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(length = 18)
+    @Column(length = 18, unique = true, nullable = false)
     String username;
     String email;
     String password;

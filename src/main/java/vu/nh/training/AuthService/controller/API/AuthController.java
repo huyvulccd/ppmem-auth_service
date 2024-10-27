@@ -4,19 +4,26 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import vu.nh.training.AuthService.controller.dtos.requests.LoginRequest;
-import vu.nh.training.AuthService.controller.dtos.requests.RegisterRequest;
-import vu.nh.training.AuthService.controller.dtos.responses.TokenJWT;
+import vu.nh.training.AuthService.controller.dtos.responses.TokenJwtResponse;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
     @PostMapping("/login")
-    public ResponseEntity<TokenJWT> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<TokenJwtResponse> login(@RequestBody LoginRequest request) {
         // Implement login logic here
         String tokenRF = "todo";
 
-        return ResponseEntity.ok(new TokenJWT("", "", 0));
+        return ResponseEntity.ok(new TokenJwtResponse("", "", 0));
+        // Return the 401 Unauthorized
+    }
+
+    @PostMapping("/introspection")
+    public ResponseEntity<TokenJwtResponse> introspection(@RequestHeader("Authorization") String accessToken,
+                                                          @RequestHeader("refreshToken") String refreshToken) {
+        // Use the authToken for introspection, if needed
+        return ResponseEntity.ok(new TokenJwtResponse("", "", 0));
         // Return the 401 Unauthorized
     }
 
