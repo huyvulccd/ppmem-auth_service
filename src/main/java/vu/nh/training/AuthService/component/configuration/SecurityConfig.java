@@ -17,15 +17,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import vu.nh.training.AuthService.component.providers.JwtProvider;
+import vu.nh.training.AuthService.services.jwtServices.JwtService;
 
 @Configuration
 @EnableWebSecurity
 @FieldDefaults(makeFinal = true, level = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class SecurityConfig {
-    String[] urlPublic = {"/api/auth/login", "/api/auth/forgot-password"};
-    JwtProvider jwtProvider;
+    String[] urlPublic = {"/api/auth/login", "/api/auth/forgot-password", "/api/auth/introspection"};
+    JwtService jwtService;
     JwtAuthenticationFilter jwtAuthenticationFilter;
     UserDetailsService userDetailsService;
 
@@ -41,11 +41,10 @@ public class SecurityConfig {
                 .formLogin(login -> login
                         .loginProcessingUrl("/api/auth/login"))
                 .oauth2Login(oauth2 -> oauth2
-                        .successHandler((request, response, authentication) ->
-                                jwtProvider.loginOauth2Success(response, authentication)))
+                        .successHandler(jwtService::loginOauth2Success))
                 .logout(logout -> logout
                         .addLogoutHandler((request, response, authentication) ->
-                        jwtProvider.logoutHandler(request, authentication)))
+                        jwtService.logoutHandler(request, authentication)))
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }

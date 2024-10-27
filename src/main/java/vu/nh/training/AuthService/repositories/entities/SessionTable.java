@@ -1,10 +1,7 @@
 package vu.nh.training.AuthService.repositories.entities;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.sql.Timestamp;
@@ -12,6 +9,7 @@ import java.sql.Timestamp;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
