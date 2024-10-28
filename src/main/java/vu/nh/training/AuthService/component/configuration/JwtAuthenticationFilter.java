@@ -19,6 +19,7 @@ import vu.nh.training.AuthService.services.jwtServices.JwtService;
 import vu.nh.training.AuthService.services.jwtServices.UserService;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 @FieldDefaults(makeFinal = true, level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
@@ -29,7 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     JwtService jwtService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request, @SuppressWarnings("null") HttpServletResponse response,
+     @SuppressWarnings("null") FilterChain filterChain) throws ServletException, IOException {
+
         String accessToken = WebCommon.getHeaderFromRequest(request, "accessToken");
         String refreshToken = WebCommon.getHeaderFromRequest(request, "refreshToken");
 
@@ -43,8 +46,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         } else if (!StringUtils.isEmpty(refreshToken) && jwtService.validateToken(refreshToken)
                 && jwtService.checkRefreshToken(refreshToken)) {
-            String username = jwtService.processNewSession(response, refreshToken);
+            String username;
+            try {
+                username = jwtService.rotateRefreshToken(response, refreshToken);
             setContextHolder(request, username);
+            } catch (ParseException e) {
+                logger.warn(e);
+                e.printStackTrace();
+            }
 
         }
         filterChain.doFilter(request, response);

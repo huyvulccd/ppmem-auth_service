@@ -24,7 +24,8 @@ import vu.nh.training.AuthService.services.jwtServices.JwtService;
 @FieldDefaults(makeFinal = true, level = AccessLevel.PACKAGE)
 @AllArgsConstructor
 public class SecurityConfig {
-    String[] urlPublic = {"/api/auth/login", "/api/auth/forgot-password", "/api/auth/introspection"};
+    String[] urlPublic = {"/api/auth/login", "/api/auth/forgot-password", "/api/auth/introspection", "swagger-ui/index.html#/"};
+
     JwtService jwtService;
     JwtAuthenticationFilter jwtAuthenticationFilter;
     UserDetailsService userDetailsService;

@@ -21,7 +21,7 @@ public class UserService implements UserDetailsService {
         return getUserByUsername(username);
     }
 
-    public UserApp getUserByUsername(String username) {
+    public UserApp getUserByUsername(String username) { 
         return userRepository.getByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username: " + username));
     }
