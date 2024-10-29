@@ -2,6 +2,7 @@ package vu.nh.training.AuthService.component.configuration;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,7 +23,7 @@ import vu.nh.training.AuthService.services.jwtServices.JwtService;
 @Configuration
 @EnableWebSecurity
 @FieldDefaults(makeFinal = true, level = AccessLevel.PACKAGE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig {
     String[] urlPublic = {"/api/auth/login", "/api/auth/forgot-password", "/api/auth/introspection", "swagger-ui/index.html#/"};
 

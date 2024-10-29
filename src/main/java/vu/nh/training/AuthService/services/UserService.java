@@ -1,18 +1,20 @@
-package vu.nh.training.AuthService.services.jwtServices;
+package vu.nh.training.AuthService.services;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 import vu.nh.training.AuthService.repositories.UserRepository;
 import vu.nh.training.AuthService.repositories.entities.UserApp;
 
 @Service
 @FieldDefaults(makeFinal = true, level = AccessLevel.PACKAGE)
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class UserService implements UserDetailsService {
     UserRepository userRepository;
 

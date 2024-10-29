@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import vu.nh.training.AuthService.controller.dtos.responses.TokenJwtResponse;
+import vu.nh.training.AuthService.controller.dtos.responses.JwtResponse;
 
 @RestController
 @RequestMapping("/api/middleware")
 public class MiddleWare {
     //refreshToken and rotateToken
     @PostMapping("")
-    public ResponseEntity<TokenJwtResponse> verify(@RequestHeader("Authorization") String refreshToken) {
-        return ResponseEntity.ok(new TokenJwtResponse("", "", 0));
+    public ResponseEntity<JwtResponse> verify(@RequestHeader("Authorization") String refreshToken) {
+        return ResponseEntity.ok(new JwtResponse("", "", 0));
         // Return the 401 Unauthorized
     }
 }

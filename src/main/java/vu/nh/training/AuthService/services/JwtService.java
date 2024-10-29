@@ -8,11 +8,12 @@ import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import vu.nh.training.AuthService.component.common.WebCommon;
@@ -22,7 +23,6 @@ import vu.nh.training.AuthService.component.utils.AdapterUtils;
 import vu.nh.training.AuthService.component.utils.TimeStampUtil;
 import vu.nh.training.AuthService.controller.dtos.FingerDevice;
 import vu.nh.training.AuthService.repositories.SessionTableRepository;
-import vu.nh.training.AuthService.repositories.UserRepository;
 import vu.nh.training.AuthService.repositories.entities.SessionTable;
 import vu.nh.training.AuthService.repositories.entities.UserApp;
 
@@ -31,11 +31,12 @@ import java.util.Date;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtService {
     SessionTableRepository sessionTableRepository;
-    UserRepository userRepository;
+    @Lazy
+    UserService userService;
 
     @NonFinal
     @Value("${jwt.secret}")
@@ -53,13 +54,13 @@ public class JwtService {
     }
 
     public void saveRefreshToken(FingerDevice fingerDevice, String username, String refreshToken) {
-        UserApp userApp = userRepository.getByUsername(username).orElseThrow(IllegalArgumentException::new);
+        UserApp userApp = userService.getUserByUsername(username);
 
         String action = this.getClass() + "/" + "saveRefreshToken";
         String ipAddress = fingerDevice.ipAddress();
         String deviceInfo = fingerDevice.deviceInfo();
         SessionTable sessionTable = SessionTable.builder()
-                .refreshToken(refreshToken)
+                .RefreshToken(refreshToken)
                 .userApp(userApp)
                 .action(action)
                 .timestamp(TimeStampUtil.getCurrentTimestamp())

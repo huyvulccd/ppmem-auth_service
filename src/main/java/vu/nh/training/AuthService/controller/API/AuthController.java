@@ -1,29 +1,38 @@
 package vu.nh.training.AuthService.controller.API;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import vu.nh.training.AuthService.controller.dtos.requests.LoginRequest;
-import vu.nh.training.AuthService.controller.dtos.responses.TokenJwtResponse;
+import vu.nh.training.AuthService.controller.dtos.requests.ResetPasswordRequest;
+import vu.nh.training.AuthService.controller.dtos.responses.JwtResponse;
+import vu.nh.training.AuthService.services.AuthService;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @PostMapping("/login")
-    public ResponseEntity<TokenJwtResponse> login(@RequestBody LoginRequest request) {
-        // Implement login logic here
-        String tokenRF = "todo";
+    @Autowired
+    private AuthService authService;
 
-        return ResponseEntity.ok(new TokenJwtResponse("", "", 0));
+    @PostMapping("/login")
+    public ResponseEntity<JwtResponse> login(@RequestBody LoginRequest request) {
+        JwtResponse jwtResponse = authService.verifierAccount(request);
+        return ResponseEntity.ok(jwtResponse);
         // Return the 401 Unauthorized
     }
 
     @PostMapping("/introspection")
-    public ResponseEntity<TokenJwtResponse> introspection(@RequestHeader("Authorization") String accessToken,
+    public ResponseEntity<JwtResponse> introspection(@RequestHeader("Authorization") String accessToken,
                                                           @RequestHeader("refreshToken") String refreshToken) {
         // Use the authToken for introspection, if needed
-        return ResponseEntity.ok(new TokenJwtResponse("", "", 0));
+        return ResponseEntity.ok(new JwtResponse("", "", 0));
         // Return the 401 Unauthorized
     }
 

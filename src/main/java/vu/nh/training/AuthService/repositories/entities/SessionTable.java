@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class SessionTable {
     @Id
-    String RefreshToken;
+    String refreshToken;
 
     @ManyToOne
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
