@@ -5,6 +5,8 @@ spring:
     username: huyvu
     url: jdbc:postgresql://localhost:5432/meap_db_auth
     password: "123456"
+    hikari:
+      shutdown-timeout: 5000
   jpa:
     hibernate:
       format_sql: true
@@ -27,3 +29,5 @@ spring:
             authorization-uri: https://accounts.google.com/o/oauth2/auth
             token-uri: https://oauth2.googleapis.com/token
             user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+jwt:
+  secret: ${secret_key}

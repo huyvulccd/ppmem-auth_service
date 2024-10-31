@@ -1,4 +1,4 @@
-package vu.nh.training.AuthService.services.jwtServices;
+package vu.nh.training.AuthService.services;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -8,7 +8,7 @@ import com.nimbusds.jwt.SignedJWT;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class JwtService {
     SessionTableRepository sessionTableRepository;
@@ -42,17 +42,6 @@ public class JwtService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    public void loginOauth2Success(HttpServletRequest request, HttpServletResponse response,
-            Authentication authentication) {
-        String accessToken = generateAccessToken(authentication);
-        String refreshToken = generateRefreshToken(authentication);
-        String fingerDevice = WebCommon.getHeaderFromRequest(request, "FingerDevice");
-        saveRefreshToken(AdapterUtils.parse(fingerDevice, FingerDevice.class), authentication.getName(), refreshToken);
-
-        response.addHeader("Authorization", "Bearer " + accessToken);
-        response.addHeader("RefreshToken", refreshToken);
-    }
-
     public void saveRefreshToken(FingerDevice fingerDevice, String username, String refreshToken) {
         UserApp userApp = userService.getUserByUsername(username);
 
@@ -60,7 +49,7 @@ public class JwtService {
         String ipAddress = fingerDevice.ipAddress();
         String deviceInfo = fingerDevice.deviceInfo();
         SessionTable sessionTable = SessionTable.builder()
-                .RefreshToken(refreshToken)
+                .refreshToken(refreshToken)
                 .userApp(userApp)
                 .action(action)
                 .timestamp(TimeStampUtil.getCurrentTimestamp())
@@ -79,6 +68,7 @@ public class JwtService {
                 .subject(username)
                 .issueTime(currentDate)
                 .expirationTime(expireDate)
+                .claim("role", authentication.getAuthorities())
                 .build();
         return generateToken(jwtClaimsSet);
     }

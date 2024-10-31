@@ -1,10 +1,7 @@
 package vu.nh.training.AuthService.repositories.entities;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +14,7 @@ import java.util.List;
 
 @Data
 @Entity
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -46,12 +44,12 @@ public class UserApp implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return this.status.equals(StatusUser.DELETED);
+        return !this.status.equals(StatusUser.DELETED);
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return this.status.equals(StatusUser.BLOCKED);
+        return !this.status.equals(StatusUser.BLOCKED);
     }
 
     @Override
