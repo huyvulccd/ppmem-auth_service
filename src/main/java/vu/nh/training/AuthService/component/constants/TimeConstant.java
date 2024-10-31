@@ -1,6 +1,5 @@
 package vu.nh.training.AuthService.component.constants;
 
-import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;

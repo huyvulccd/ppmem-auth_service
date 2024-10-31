@@ -1,4 +1,4 @@
-package vu.nh.training.AuthService.controller.API;
+package vu.nh.training.AuthService.controller.dtos.requests;
 
 public record ResetPasswordRequest(
         String oldPassword,

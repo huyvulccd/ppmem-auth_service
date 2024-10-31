@@ -15,8 +15,8 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import vu.nh.training.AuthService.component.common.WebCommon;
-import vu.nh.training.AuthService.services.jwtServices.JwtService;
-import vu.nh.training.AuthService.services.jwtServices.UserService;
+import vu.nh.training.AuthService.services.UserService;
+import vu.nh.training.AuthService.services.JwtService;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -33,8 +33,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request, @SuppressWarnings("null") HttpServletResponse response,
      @SuppressWarnings("null") FilterChain filterChain) throws ServletException, IOException {
 
-        String accessToken = WebCommon.getHeaderFromRequest(request, "accessToken");
-        String refreshToken = WebCommon.getHeaderFromRequest(request, "refreshToken");
+        String accessToken = WebCommon.getHeaderFromRequest(request, "Authorization");
+        String refreshToken = WebCommon.getHeaderFromRequest(request, "RefreshToken");
 
         logger.info("uri: " + request.getRequestURI());
         logger.info("accessToken: " + accessToken);

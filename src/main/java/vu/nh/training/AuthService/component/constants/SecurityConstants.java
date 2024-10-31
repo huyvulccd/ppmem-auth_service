@@ -6,4 +6,6 @@ public class SecurityConstants {
 
     public static final JWSAlgorithm JWT_ALGORITHM = JWSAlgorithm.HS512;
 
+
+
 }
